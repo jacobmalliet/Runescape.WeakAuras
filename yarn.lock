@@ -11,6 +11,21 @@
     electron ">=10.0.0"
     sharp ">=0.27.2"
 
+"@alt1/chatbox@^1.0.0-alpha.6":
+  version "1.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@alt1/chatbox/-/chatbox-1.0.0-alpha.6.tgz#b9464f9dce69e318ffc8a331a505c74502c14301"
+  integrity sha512-CKEfBMKy8sAnmyBSdQcAEibRruO5e4bXZJaMnEXopQtJrxOcL0LKs4VdbhiFczszjyhFy9csB0rR0A2E1+Ke6Q==
+  dependencies:
+    "@alt1/base" "^1.0.0-alpha.6"
+    "@alt1/ocr" "^1.0.0-alpha.6"
+
+"@alt1/ocr@^1.0.0-alpha.6":
+  version "1.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@alt1/ocr/-/ocr-1.0.0-alpha.6.tgz#5027fa81d7a0310fee0c251180c82a52e6969277"
+  integrity sha512-LEtNleCiIRhm/97SxpEYqZHon0/bgs3DcoIfgceIrtKdpAGS2rr5ytWeGvnE2IUdZjzHGYQvWdu+1snmrHxOYA==
+  dependencies:
+    "@alt1/base" "^1.0.0-alpha.6"
+
 "@babel/parser@^7.16.4":
   version "7.21.4"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.21.4.tgz#94003fdfc520bbe2875d4ae557b43ddb6d880f17"
