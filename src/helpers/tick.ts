@@ -1,10 +1,14 @@
 // Tick rate in milliseconds
 const tickRate = 600;
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+export const delay = (ms: number) =>
+	new Promise((resolve) => setTimeout(resolve, ms));
 
 // Executes a given function every tickRate milliseconds
-export const executeEachTick = (fn: () => void) => {
+export const executeEachTick = (
+	fn: () => void,
+	functionTickRate = tickRate
+) => {
 	let running = true;
 	const cancel = () => (running = false);
 
@@ -15,7 +19,7 @@ export const executeEachTick = (fn: () => void) => {
 			} catch (error) {
 				console.error('Error in tick loop: ', error);
 			}
-			await delay(tickRate);
+			await delay(functionTickRate);
 		}
 	};
 

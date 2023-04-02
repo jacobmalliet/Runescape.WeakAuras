@@ -1,18 +1,46 @@
 <script setup lang="ts">
 import { clearMessages, allChatMessages } from '../helpers/chatbox';
-import OverloadTracker from './OverloadTracker.vue';
+import * as a1lib from '@alt1/base';
+import { executeEachTick } from '../helpers/tick';
+import { overlayPosition } from '../state/overlayState';
+
+const positionOverlay = () => {
+	let lastUpdate = 0;
+	alt1.setTooltip('Click to save overlay position.');
+	const cancellationCheck = executeEachTick(() => {
+		if (
+			lastUpdate > 0 &&
+			lastUpdate > alt1.rsLastActive &&
+			typeof cancellationCheck !== 'undefined'
+		) {
+			cancellationCheck.cancel();
+			alt1.clearTooltip();
+			return;
+		}
+
+		lastUpdate = alt1.rsLastActive;
+
+		const mousePosition = a1lib.getMousePosition();
+
+		if (mousePosition === null) {
+			return;
+		}
+
+		overlayPosition.x = mousePosition.x;
+		overlayPosition.y = mousePosition.y;
+	}, 25);
+};
 </script>
 
 <template>
 	<div class="card">
 		<button type="button" @click="clearMessages">Clear Messages</button>
+		<button type="button" @click="positionOverlay">
+			Position Elements
+		</button>
+
 		<div>
-			Plugins:
-
-			<br />
-			<OverloadTracker />
-
-			Messages:
+			Plugins: Messages:
 			<br />
 			<div
 				style="text-align: left"

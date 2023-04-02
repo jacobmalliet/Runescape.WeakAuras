@@ -152,7 +152,7 @@ const runWithLogging = (fn: () => void) => {
 
 setTimeout(
 	() =>
-		tickHandler = executeEachTick(() => {
+		(tickHandler = executeEachTick(() => {
 			const messages = tryGetChatBoxMessages();
 
 			if (messages.length > 0) {
@@ -161,6 +161,6 @@ setTimeout(
 				);
 				allChatMessages.value = [...allChatMessages.value, ...messages];
 			}
-		}),
+		})),
 	1000
 );

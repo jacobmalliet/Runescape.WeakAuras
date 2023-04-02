@@ -13,7 +13,10 @@ indent_size=4
 [*.ts]
 indent_size=4
 
-[*.vue]
+[*.json]
+indent_size=4
+
+*.vue]
 ij_continuation_indent_size = 4
 ij_smart_tabs = true
 ij_vue_indent_children_of_top_level = template,script,style
