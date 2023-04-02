@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@alt1/base": "^1.0.0-alpha.6",
+    "@types/dom-to-image": "^2.6.4",
+    "dom-to-image": "^2.6.0",
+    "image-size": "^1.0.2",
     "vue": "^3.2.47"
   },
   "devDependencies": {

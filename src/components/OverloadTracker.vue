@@ -1,40 +1,45 @@
 <script setup lang="ts">
-import * as a1lib from "@alt1/base";
-import { MessageItem, onMessage, removeOnMessage } from '../helpers/chatbox'
-import { onDeactivated, ref, watch } from 'vue'
+	import * as a1lib from "@alt1/base";
+	import domtoimage from 'dom-to-image';
+	import { MessageItem, onMessage, removeOnMessage } from '../helpers/chatbox'
+	import { ref, onDeactivated } from 'vue'
+
+	const overlayImage = async () => {
+		const imageSrcString = await domtoimage.toPng(card.value!);
+
+		const image = await a1lib.ImageDetect.imageDataFromUrl(imageSrcString);
+		const result = a1lib.encodeImageString(image, 0, 0, image.width, image.height);
+		alt1.overLayImage(100, 100, result, image.width, 5000)
+	}
+
+	const processMessages = async (messages : MessageItem[]) => {
+		const anyMessages = messages.some(message => message.text.includes('eating this'));
+		if (!anyMessages) {
+			return;
+		}
+
+		await overlayImage();
+	}
 
 
-const processMessages = (messages : MessageItem[]) => {
-  messages.forEach(message => {
-    if (message.text.includes('eating this')) {
-      (window as any).white = a1lib.mixColor(255, 255, 255);
-      const white = a1lib.mixColor(255, 255, 255);
 
-      const height = alt1.rsHeight;
-      const width = alt1.rsWidth;
+	const card = ref(null as HTMLElement | null)
 
-      const x = width / 2;
-      const y = height / 2;
-      alt1.overLayTextEx('Run away little girl, run away', white, 36, Math.floor(x), Math.floor(y), 5000, 'sans-serif', true, false);
-    }
-  });
-};
+	onMessage(processMessages);
 
-onMessage(processMessages);
-
-onDeactivated(() => {
- removeOnMessage(processMessages);
-});
+	onDeactivated(() => {
+	 removeOnMessage(processMessages);
+	});
 </script>
 
 <template>
-  <div class="card">
-    <span>OverLoad Needed!</span>
-  </div>
+	<div class="card">
+		<button ref="card" @click="overlayImage" style="color: red;">Testing</button>
+	</div>
 </template>
 
 <style scoped>
 .read-the-docs {
-  color: #888;
+	color: #888;
 }
 </style>

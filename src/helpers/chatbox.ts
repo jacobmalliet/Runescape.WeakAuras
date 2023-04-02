@@ -3,33 +3,33 @@ import ChatBoxReader, { ChatLine } from "@alt1/chatbox";
 import { ref } from "vue";
 import { excuteEachTick } from "./tick";
 
-var tickcount = 0;
+const reader = new ChatBoxReader();
+let hasLeftFound = false;
 
+const highlightChatArea = function () {
+    if (!reader.pos) { 
+        return;
+    }
 
-var reader = new ChatBoxReader();
-var hasleftfound = false;
-
-var higlightarea = function () {
-    if (!reader.pos) { return; }
-    var p = reader.pos;
+    const p = reader.pos;
     alt1.overLayRect(a1lib.mixColor(255, 255, 255), p.mainbox.rect.x, p.mainbox.rect.y, p.mainbox.rect.width, p.mainbox.rect.height, 2000, 1);
 }
 
-var tryFind = function () {
+const tryFind = function () {
     if (reader.pos) {
         return;
     }
 
     reader.find();
-    higlightarea();
+    highlightChatArea();
 }
 
-var read = function () {
+const read = function () {
     const lastresult = reader.read();
 
-    if (hasleftfound != reader.pos?.mainbox.leftfound) {
-        hasleftfound = true;
-        higlightarea();
+    if (hasLeftFound != reader.pos?.mainbox.leftfound) {
+        hasLeftFound = true;
+        highlightChatArea();
     }
 
     return lastresult;
@@ -41,11 +41,11 @@ export type MessageItem = {
     text: string;
 }
 
-// Given a message with the format [24:16::00] Mesage text parse that into individual timestamp and message parts
-// The message can also optionally contain a clan tag in the format [24:16::00] [Clan Tag] Message text
+// Given a message with the format [24:16:00] Message text parse that into individual timestamp and message parts
+// The message can also optionally contain a clan tag in the format [24:16:00] [Clan Tag] Message text
 const parseChatBoxLine = (line: ChatLine) : MessageItem => {
 
-    const group = line.text.match(/\[(.*?)\]/g);
+    const group = line.text.match(/\[(.*?)]/g);
 
     if (group && group.length > 0) {
         const timestamp = group[0].replace('[', '').replace(']', '');
