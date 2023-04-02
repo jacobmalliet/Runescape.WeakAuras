@@ -14,8 +14,14 @@ import OverloadTracker from './OverloadTracker.vue';
 
 			Messages:
 			<br />
-			<div style="text-align: left;" v-for="(message, index) in allChatMessages" :key="index">
-				[{{message.timestamp}}] - {{message.clanTag ? `[${message.clanTag}]` : ""}} {{ message.text }}
+			<div
+				style="text-align: left"
+				v-for="(message, index) in allChatMessages"
+				:key="index"
+			>
+				[{{ message.timestamp }}] -
+				{{ message.clanTag ? `[${message.clanTag}]` : '' }}
+				{{ message.text }}
 			</div>
 		</div>
 	</div>

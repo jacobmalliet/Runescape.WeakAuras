@@ -13,14 +13,6 @@ indent_size=4
 [*.ts]
 indent_size=4
 
-[*.json]
-indent_style=space
-indent_size=2
-
-[*.xml]
-indent_style=space
-indent_size=2
-
 [*.vue]
 ij_continuation_indent_size = 4
 ij_smart_tabs = true
