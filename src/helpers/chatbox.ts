@@ -6,6 +6,9 @@ import { executeEachTick } from './tick';
 const reader = new ChatBoxReader();
 let hasLeftFound = false;
 
+const chatMonitoringEnabled =
+	window.alt1 && alt1.permissionGameState && alt1.permissionPixel;
+
 const highlightChatArea = function () {
 	if (!reader.pos) {
 		return;
@@ -24,7 +27,7 @@ const highlightChatArea = function () {
 };
 
 const tryFind = function () {
-	if (reader.pos) {
+	if (!chatMonitoringEnabled || reader.pos) {
 		return;
 	}
 
@@ -33,6 +36,10 @@ const tryFind = function () {
 };
 
 const read = function () {
+	if (!chatMonitoringEnabled) {
+		return null;
+	}
+
 	const lastResult = reader.read();
 
 	if (hasLeftFound != reader.pos?.mainbox.leftfound) {
@@ -138,6 +145,14 @@ export const clearMessages = () => {
 
 export const cancelMonitoring = () => {
 	tickHandler.cancel();
+};
+
+export const addChatMessage = (message: MessageItem) => {
+	eventHandlers.forEach((handler) =>
+		runWithLogging(() => handler([message]))
+	);
+
+	allChatMessages.value = [...allChatMessages.value, message];
 };
 
 const runWithLogging = (fn: () => void) => {

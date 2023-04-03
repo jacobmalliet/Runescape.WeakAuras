@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { clearMessages, allChatMessages } from '../helpers/chatbox';
+import {
+	clearMessages,
+	allChatMessages,
+	addChatMessage,
+} from '../helpers/chatbox';
 import * as a1lib from '@alt1/base';
 import { executeEachTick } from '../helpers/tick';
 import { overlayPosition, overlayPlugins } from '../state/overlayState';
+import { ref } from 'vue';
 
 const positionOverlay = () => {
 	let lastUpdate = 0;
@@ -30,6 +35,20 @@ const positionOverlay = () => {
 		overlayPosition.y = mousePosition.y;
 	}, 25);
 };
+
+const newMessageText = ref('');
+
+const addMessage = () => {
+	if (newMessageText.value === '') {
+		return;
+	}
+
+	addChatMessage({
+		text: newMessageText.value,
+		timestamp: new Date().toLocaleTimeString(),
+	});
+	newMessageText.value = '';
+};
 </script>
 
 <template>
@@ -54,6 +73,13 @@ const positionOverlay = () => {
 
 			<br />
 
+			<input
+				type="text"
+				v-model="newMessageText"
+				@keyup.enter="addMessage"
+			/>
+
+			<br />
 			Messages:
 			<div
 				style="text-align: left"

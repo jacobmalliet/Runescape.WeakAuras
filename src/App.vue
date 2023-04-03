@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import AppConfiguration from './components/AppConfiguration.vue';
 import RunescapeOverlay from './components/RunescapeOverlay.vue';
+
+const displayOverLayInApp = window.alt1;
 </script>
 
 <template>
 	<AppConfiguration />
 	<!-- Hidden overlay element that is converted into an image and overlaid on runescape -->
-	<div style="overflow: hidden; height: 0">
+	<div :style="displayOverLayInApp ? { overflow: 'hidden', height: 0 } : {}">
 		<RunescapeOverlay />
 	</div>
 </template>

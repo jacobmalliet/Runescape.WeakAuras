@@ -1,9 +1,10 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { MessageItem, onMessage, removeOnMessage } from '../../helpers/chatbox';
 import { computed, onDeactivated, ref } from 'vue';
 import IconContainer from './../IconContainer.vue';
 import { TimeSpan } from '../../helpers/timespan';
 import baseOverloadImageUrl from '../../assets/Overload_salve.webp?url';
+import RemainingTime from '../RemainingTime.vue';
 
 const props = defineProps({});
 
@@ -28,22 +29,22 @@ onDeactivated(() => {
 const overloadDuration = TimeSpan.fromMinutes(60).totalMilliseconds;
 const lastDrinkTime = ref(0);
 
-const remainingTime = computed(() => {
+const overloadExpiration = computed(() => {
 	if (lastDrinkTime.value === 0) {
-		return undefined;
+		return -1;
 	}
 
-	const timeSinceLastDrink = Date.now() - lastDrinkTime.value;
-	return overloadDuration - timeSinceLastDrink;
+	return lastDrinkTime.value + overloadDuration;
 });
 </script>
 
 <template>
 	<div>
 		<IconContainer :imageSrc="baseOverloadImageUrl" />
-		<div v-if="remainingTime !== undefined">
-			{{ remainingTime }}
-		</div>
+		<RemainingTime
+			v-if="overloadExpiration > 0"
+			:expirationTime="overloadExpiration"
+		/>
 	</div>
 </template>
 
