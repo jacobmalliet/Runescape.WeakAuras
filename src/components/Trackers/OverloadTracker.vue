@@ -26,7 +26,7 @@ onDeactivated(() => {
 	removeOnMessage(processMessages);
 });
 
-const overloadDuration = TimeSpan.fromMinutes(60).totalMilliseconds;
+const overloadDuration = TimeSpan.fromMinutes(6).totalMilliseconds;
 const lastDrinkTime = ref(0);
 
 const overloadExpiration = computed(() => {
@@ -39,7 +39,7 @@ const overloadExpiration = computed(() => {
 </script>
 
 <template>
-	<div>
+	<div class="icon-with-timer">
 		<IconContainer :imageSrc="baseOverloadImageUrl" />
 		<RemainingTime
 			v-if="overloadExpiration > 0"
@@ -49,7 +49,14 @@ const overloadExpiration = computed(() => {
 </template>
 
 <style scoped>
-.read-the-docs {
-	color: #888;
+.icon-with-timer {
+  display: block;
+  box-sizing: border-box;
+  position: relative;
+  height: 60px;
+  min-width: 60px;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid red;
 }
 </style>

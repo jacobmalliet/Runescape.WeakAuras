@@ -23,11 +23,10 @@ imageToBase64Async(props.imageSrc!).then((dataUrl) => {
 <style scoped>
 .icon-container {
 	display: flex;
+  box-sizing: border-box;
 	justify-content: center;
 	align-items: center;
 	height: 60px;
 	width: 60px;
-	border: 1px red solid;
-	border-radius: 4px;
 }
 </style>
