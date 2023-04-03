@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import OverloadTracker from './OverloadTracker.vue';
-import { onDeactivated, onMounted, reactive, ref, watch } from 'vue';
+import { computed, onDeactivated, onMounted, reactive, ref, watch } from 'vue';
 import domToImage from 'dom-to-image';
 
 import * as a1lib from '@alt1/base';
-import { overlayPosition } from '../state/overlayState';
+import { overlayPlugins, overlayPosition } from '../state/overlayState';
 import { TimeSpan } from '../helpers/timespan';
 
 // Overlay
@@ -48,6 +47,21 @@ let overlayImageData = reactive<DomImage>({
 	imageBase64: '',
 });
 
+const refreshImageData = async () => {
+	const newImageData = await domToImageData();
+
+	if (newImageData === undefined) {
+		overlayImageData.width = 0;
+		overlayImageData.height = 0;
+		overlayImageData.imageBase64 = '';
+		return;
+	} else {
+		overlayImageData.width = newImageData.width;
+		overlayImageData.height = newImageData.height;
+		overlayImageData.imageBase64 = newImageData.imageBase64;
+	}
+};
+
 const overlayImage = async () => {
 	if (overlayImageData.imageBase64.length === 0) {
 		return;
@@ -81,18 +95,12 @@ const overlayImage = async () => {
 };
 
 // Observer tracks changes to the overlay content and re-renders the overlay
-const observer = new MutationObserver(() => {
-	overlayImage();
+const observer = new MutationObserver(async () => {
+	await refreshImageData();
 });
 
 onMounted(async () => {
-	overlayImageData = (await domToImageData()) ?? {
-		height: 0,
-		width: 0,
-		imageBase64: '',
-	};
-
-	await overlayImage();
+	await refreshImageData();
 
 	observer.observe(overlay.value as HTMLElement, {
 		attributes: true,
@@ -103,23 +111,27 @@ onMounted(async () => {
 
 onDeactivated(() => {
 	observer.disconnect();
+	clearTimeout(nextExecution);
+	alt1.overLayClearGroup(groupName);
 });
 
-watch(overlayPosition, () => {
-	overlayImage();
-});
+// When either the position or content of the overlay change, refresh the runescape display
+watch(overlayPosition, () => overlayImage());
+watch(overlayImageData, () => overlayImage());
 
-watch(overlayImageData, () => {
-	overlayImage();
+const enabledPlugins = computed(() => {
+	return overlayPlugins.allPlugins.filter((plugin) => plugin.enabled);
 });
 </script>
 
 <template>
 	<div ref="overlay" class="runescape-overlay">
-		<OverloadTracker />
-		<OverloadTracker />
-		<OverloadTracker />
-		<OverloadTracker />
+		<span>Plugins</span>
+		<Component
+			v-for="plugin in enabledPlugins"
+			:is="plugin.name"
+			:key="plugin.name"
+		/>
 	</div>
 </template>
 

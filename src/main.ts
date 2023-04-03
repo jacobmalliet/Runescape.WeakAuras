@@ -1,9 +1,23 @@
 import { createApp } from 'vue';
 import './style.css';
 import App from './App.vue';
-import * as a1lib from '@alt1/base';
+import components from './components/Trackers';
+import { addPlugin } from './state/overlayState';
 
-createApp(App).mount('#app');
+const app = createApp(App);
+
+for (const component of components) {
+	addPlugin(component, {});
+}
+
+// Register all plugins
+for (const component of components) {
+	addPlugin(component, {});
+	app.component((component as any).__name, component);
+}
+
+// Mount
+app.mount('#app');
 
 if (window.alt1) {
 	alt1.identifyAppUrl('./appconfig.json');

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue';
+import AppConfiguration from './components/AppConfiguration.vue';
 import RunescapeOverlay from './components/RunescapeOverlay.vue';
 </script>
 
 <template>
-	<HelloWorld />
+	<AppConfiguration />
 	<!-- Hidden overlay element that is converted into an image and overlaid on runescape -->
 	<div style="overflow: hidden; height: 0">
 		<RunescapeOverlay />

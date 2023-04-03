@@ -110,8 +110,6 @@ const tryGetChatBoxMessages = () => {
 	}
 };
 
-console.info(`Chatbox monitoring started: ${reader.pos}`);
-
 let tickHandler = {
 	cancel: () => {
 		return;

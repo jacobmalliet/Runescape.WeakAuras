@@ -2,7 +2,7 @@
 import { clearMessages, allChatMessages } from '../helpers/chatbox';
 import * as a1lib from '@alt1/base';
 import { executeEachTick } from '../helpers/tick';
-import { overlayPosition } from '../state/overlayState';
+import { overlayPosition, overlayPlugins } from '../state/overlayState';
 
 const positionOverlay = () => {
 	let lastUpdate = 0;
@@ -40,8 +40,21 @@ const positionOverlay = () => {
 		</button>
 
 		<div>
-			Plugins: Messages:
+			Plugins:
+			<div v-for="plugin in overlayPlugins.allPlugins" :key="plugin.name">
+				<input
+					:id="'PluginEnabled_' + plugin.name"
+					type="checkbox"
+					v-model="plugin.enabled"
+				/>
+				<label :for="'PluginEnabled_' + plugin.name">
+					{{ plugin.name }}
+				</label>
+			</div>
+
 			<br />
+
+			Messages:
 			<div
 				style="text-align: left"
 				v-for="(message, index) in allChatMessages"
