@@ -63,7 +63,7 @@ const refreshImageData = async () => {
 };
 
 const overlayImage = async () => {
-	if (!window.alt || !alt1.permissionOverlay) {
+	if (!window.alt1 || !alt1.permissionOverlay) {
 		return;
 	}
 
